@@ -344,7 +344,7 @@ class Move_References_OT(bpy.types.Operator):
         item = references_overlays_props.reference[self.index]
         transform = references_overlays.get_image_transform_state(context, self.index)
         if not transform:
-            context.area.header_text_set(None)
+            context.workspace.status_text_set(None)
             return {"CANCELLED"}
 
         if event.type == "R" and not event.alt:
@@ -489,7 +489,7 @@ class Move_References_OT(bpy.types.Operator):
                 transform.depth_set = "Back"
             elif event.type in {"X", "DEL"}:
                 bpy.ops.screen.remove_references_slot(index=self.index)
-                context.area.header_text_set(None)
+                context.workspace.status_text_set(None)
                 return {"FINISHED"}
 
         if self.mode == "PAN":
@@ -734,7 +734,7 @@ class Move_References_OT(bpy.types.Operator):
 
         if event.type == "LEFTMOUSE":
             references_overlays._locked_move_attempt_index = -1
-            context.area.header_text_set(None)
+            context.workspace.status_text_set(None)
             return {"FINISHED"}
 
         if event.type in {"RIGHTMOUSE", "ESC"}:
@@ -757,7 +757,7 @@ class Move_References_OT(bpy.types.Operator):
             transform.crop_bottom = self.init_crop_bottom
 
             item.lock = self.lock
-            context.area.header_text_set(None)
+            context.workspace.status_text_set(None)
             return {"CANCELLED"}
 
         return {"RUNNING_MODAL"}
@@ -912,7 +912,7 @@ class Move_References_OT(bpy.types.Operator):
                     transform.y, 0, context.window.height, 0, context.region.height
                 )
 
-            context.area.header_text_set(
+            context.workspace.status_text_set(
                 "LMB:Confirm | RMB:Cancel | Scroll Wheel: Scale | Drag: R=Rotate, S=Scale, Z=Zoom, A=Alpha, C=Crop, G=Pan | "
                 "B:Grayscale | L:Lock Pos | O:Ortho | Alt+R/S/Z/A/C/G:Reset | F/V:Flip | H:Hide | Shift+H:Isolate | Alt+H:Unhide | 1/2:Depth | Ctrl: Snap | X:Remove"
             )
@@ -975,7 +975,7 @@ class Global_Move_References_OT(bpy.types.Operator):
             item.y = 0
 
         if event.type == "LEFTMOUSE":
-            context.area.header_text_set(None)
+            context.workspace.status_text_set(None)
             return {"FINISHED"}
 
         if event.type in {"RIGHTMOUSE", "ESC"}:
@@ -984,7 +984,7 @@ class Global_Move_References_OT(bpy.types.Operator):
             item.pivot_x = self.pivot_x
             item.pivot_y = self.pivot_y
             item.size = self.size
-            context.area.header_text_set(None)
+            context.workspace.status_text_set(None)
             return {"CANCELLED"}
 
         return {"RUNNING_MODAL"}
@@ -998,7 +998,7 @@ class Global_Move_References_OT(bpy.types.Operator):
             self.mouse_region_y = event.mouse_region_y
             self.size = item.size
 
-            context.area.header_text_set(
+            context.workspace.status_text_set(
                 "LMB: Confirm | RMB/ESC: Cancel | Scroll Wheel: Global Scale | "
                 "S: Reset Size | R: Reset Position | Shift: Fine-Tune | Ctrl: Snap"
             )
