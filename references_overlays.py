@@ -958,7 +958,7 @@ class OVERLAY_PT_Reference(bpy.types.Panel):
 
 		row = layout.row(align=True)
 		row.operator("screen.load_references", icon="FILEBROWSER", text="Load Image")
-		row.operator("screen.paste_reference", icon="PASTEDOWN", text="")
+		row.operator("screen.paste_reference", icon="PASTEDOWN", text="").from_shortcut = False
 
 		if context.screen.references_overlays_independent:
 

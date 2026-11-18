@@ -48,6 +48,7 @@ class Load_References_OT(bpy.types.Operator, ImportHelper):
                 image = bpy.data.images[file_elem.name]
             else:
                 image = bpy.data.images.load(image_path)
+                #image.pack()
 
             image.use_fake_user = True
             item = references_overlays_props.reference.add()
@@ -259,6 +260,8 @@ class Remove_References_OT(bpy.types.Operator):
         references_overlays_props = get_reference_prop(context)
         idx = self.index
 
+        #item = references_overlays_props.reference[idx]
+        #bpy.data.images.remove(bpy.data.images[item.name]) #item.name = img.name
         references_overlays_props.reference.remove(idx)
 
         # Remove the corresponding transform from ALL viewports
@@ -1119,14 +1122,20 @@ class Paste_References_OT(bpy.types.Operator):
 
     x: bpy.props.FloatProperty(options={"HIDDEN"})
     y: bpy.props.FloatProperty(options={"HIDDEN"})
+    from_shortcut: bpy.props.BoolProperty(options={"HIDDEN"}, default = True)
 
     def invoke(self, context, event):
-        self.x = map_range(
-            event.mouse_region_x, 0, context.region.width, 0, context.window.width
-        )
-        self.y = map_range(
-            event.mouse_region_y, 0, context.region.height, 0, context.window.height
-        )
+        if self.from_shortcut:
+            self.x = map_range(
+                event.mouse_region_x, 0, context.region.width, 0, context.window.width
+            )
+            self.y = map_range(
+                event.mouse_region_y, 0, context.region.height, 0, context.window.height
+            )
+        else:
+            self.x = context.window.width / 2
+            self.y = context.window.height/ 2
+
         return self.execute(context)
 
     def execute(self, context):
