@@ -48,6 +48,7 @@ class Load_References_OT(bpy.types.Operator, ImportHelper):
                 image = bpy.data.images[file_elem.name]
             else:
                 image = bpy.data.images.load(image_path)
+                image.pack()
 
             image.use_fake_user = True
             item = references_overlays_props.reference.add()
@@ -259,6 +260,8 @@ class Remove_References_OT(bpy.types.Operator):
         references_overlays_props = get_reference_prop(context)
         idx = self.index
 
+        item = references_overlays_props.reference[idx]
+        bpy.data.images.remove(bpy.data.images[item.name]) #item.name = img.name
         references_overlays_props.reference.remove(idx)
 
         # Remove the corresponding transform from ALL viewports
@@ -1142,6 +1145,7 @@ class Paste_References_OT(bpy.types.Operator):
             image.save(temp_path)
 
             img = bpy.data.images.load(temp_path)
+            img.pack()
             img.use_fake_user = True
 
             references_overlays_props = get_reference_prop(context)
